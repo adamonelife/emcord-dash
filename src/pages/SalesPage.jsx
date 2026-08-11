@@ -27,7 +27,7 @@ const stageColor = {
   'Lost': 'var(--danger)'
 };
 
-export default function PipelinePage() {
+export default function SalesPage() {
   const [deals, setDeals] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -109,7 +109,7 @@ export default function PipelinePage() {
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 20 }}>
         <div>
-          <h2 style={{ fontSize: 20, marginBottom: 4 }}>Pipeline</h2>
+          <h2 style={{ fontSize: 20, marginBottom: 4 }}>Sales</h2>
           <p style={{ color: 'var(--text-muted)', fontSize: 13, margin: 0 }}>
             Leads and deals — manual entry for now, shaped to map onto GoHighLevel later.
           </p>

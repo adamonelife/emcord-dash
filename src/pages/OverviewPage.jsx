@@ -1,82 +1,90 @@
-import { useEffect, useState } from 'react';
-import { getDeals, STAGES } from '../lib/deals';
-import { getInvoices, getExpenses } from '../lib/finance';
+import MetricCard from '../components/MetricCard';
+import OverviewSection from '../components/OverviewSection';
+import { useOverviewData } from '../hooks/useOverviewData';
+import { formatCurrencyTotals } from '../lib/overviewMetrics';
 
 export default function OverviewPage() {
-  const [deals, setDeals] = useState([]);
-  const [invoices, setInvoices] = useState([]);
-  const [expenses, setExpenses] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { loading, commercial, unavailableSources } = useOverviewData();
+  const unavailable = unavailableSources.length > 0;
+  const salesUnavailable = unavailableSources.includes('sales');
+  const financeUnavailable = unavailableSources.includes('finance');
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const [d, i, e] = await Promise.all([getDeals(), getInvoices(), getExpenses()]);
-        setDeals(d); setInvoices(i); setExpenses(e);
-      } catch (e) {
-        setError(e.message);
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, []);
-
-  const openDeals = deals.filter((d) => d.stage !== 'Won' && d.stage !== 'Lost');
-  const outstanding = invoices.filter((i) => i.status !== 'Paid' && i.status !== 'Void');
-  const totalExpenses = expenses.reduce((s, e) => s + Number(e.amount || 0), 0);
+  function metricDetail(totals, sourceUnavailable, emptyMessage) {
+    if (loading) return 'Loading current dashboard data';
+    if (sourceUnavailable) return 'Data source unavailable';
+    if (Object.keys(totals).length === 0) return emptyMessage;
+    return 'Live from the current dashboard data source';
+  }
 
   return (
     <div>
-      <div style={{ marginBottom: 24 }}>
-        <h2 style={{ fontSize: 20, marginBottom: 4 }}>Overview</h2>
-        <p style={{ color: 'var(--text-muted)', fontSize: 13, margin: 0 }}>
-          Digital twin / AR / MR / VR studio — early build, manual data entry.
-        </p>
+      <div className="page-heading executive-heading">
+        <div>
+          <h2>Executive overview</h2>
+          <p>EMCORD's commercial, delivery and operating position at a glance.</p>
+        </div>
+        <span className="overview-status">V1 operating view</span>
       </div>
 
-      {error && (
-        <div className="card" style={{ padding: 12, marginBottom: 16, borderColor: 'var(--warn)', color: 'var(--warn)', fontSize: 13 }}>
-          {error}
+      {unavailable && (
+        <div className="source-warning" role="status">
+          Some live metrics are unavailable: {unavailableSources.join(', ')}.
         </div>
       )}
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12, marginBottom: 28 }}>
-        <Kpi label="Open deals" value={loading ? '—' : openDeals.length} />
-        <Kpi label="Outstanding invoices" value={loading ? '—' : outstanding.length} />
-        <Kpi label="Total logged expenses" value={loading ? '—' : totalExpenses.toLocaleString(undefined, { maximumFractionDigits: 0 })} />
-        <Kpi label="All deals tracked" value={loading ? '—' : deals.length} />
-      </div>
-
-      <div className="card" style={{ padding: 20 }}>
-        <h3 style={{ fontSize: 13, textTransform: 'uppercase', letterSpacing: '0.04em', color: 'var(--text-muted)', marginBottom: 14 }}>
-          Pipeline by stage
-        </h3>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-          {STAGES.map((stage) => {
-            const count = deals.filter((d) => d.stage === stage).length;
-            const max = Math.max(...STAGES.map((s) => deals.filter((d) => d.stage === s).length), 1);
-            return (
-              <div key={stage} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                <div style={{ width: 110, fontSize: 12, color: 'var(--text-muted)' }}>{stage}</div>
-                <div style={{ flex: 1, background: 'var(--bg)', borderRadius: 3, height: 8, overflow: 'hidden' }}>
-                  <div style={{ width: `${(count / max) * 100}%`, background: 'var(--accent)', height: '100%' }} />
-                </div>
-                <div className="mono" style={{ width: 24, textAlign: 'right', fontSize: 12 }}>{count}</div>
-              </div>
-            );
-          })}
+      <OverviewSection title="Commercial" description="Pipeline, revenue and cash collection signals.">
+        <div className="metric-grid metric-grid-four">
+          <MetricCard
+            label="Open pipeline value"
+            value={loading ? '—' : formatCurrencyTotals(commercial.openPipeline)}
+            detail={metricDetail(commercial.openPipeline, salesUnavailable, 'No open deals')}
+          />
+          <MetricCard
+            label="Weighted pipeline value"
+            value="—"
+            detail="Stage probabilities not configured"
+          />
+          <MetricCard
+            label="Won revenue"
+            value={loading ? '—' : formatCurrencyTotals(commercial.wonRevenue)}
+            detail={metricDetail(commercial.wonRevenue, salesUnavailable, 'No won deals')}
+            tone="good"
+          />
+          <MetricCard
+            label="Outstanding invoices"
+            value={loading ? '—' : formatCurrencyTotals(commercial.outstandingInvoices)}
+            detail={metricDetail(commercial.outstandingInvoices, financeUnavailable, 'No outstanding invoices')}
+            tone="warn"
+          />
         </div>
-      </div>
-    </div>
-  );
-}
+      </OverviewSection>
 
-function Kpi({ label, value }) {
-  return (
-    <div className="card" style={{ padding: 18 }}>
-      <div className="kpi-label">{label}</div>
-      <div className="kpi-value" style={{ marginTop: 6 }}>{value}</div>
+      <OverviewSection title="Delivery" description="Project progress, risk and upcoming commitments.">
+        <div className="metric-grid metric-grid-four">
+          <MetricCard label="Active projects" value="0" detail="Projects data not configured" />
+          <MetricCard label="Projects at risk" value="0" detail="Project health not configured" />
+          <MetricCard label="Upcoming deadlines" value="0" detail="Milestones not configured" />
+          <MetricCard label="Completed projects" value="0" detail="Projects data not configured" />
+        </div>
+      </OverviewSection>
+
+      <OverviewSection title="Operations" description="Execution, blockers and resource visibility.">
+        <div className="metric-grid metric-grid-three">
+          <MetricCard label="Outstanding actions" value="0" detail="Actions data not configured" />
+          <MetricCard label="Blocked items" value="0" detail="Blockers data not configured" />
+          <MetricCard label="Team / resource summary" value="—" detail="Resource planning not configured" />
+        </div>
+      </OverviewSection>
+
+      <OverviewSection title="Recent activity" description="A future unified feed across commercial, delivery, finance and operations.">
+        <div className="card activity-card">
+          <div className="activity-marker" aria-hidden="true" />
+          <div>
+            <h4>No activity to show yet</h4>
+            <p>New leads, deals won, project changes, invoices, payments and operational events will appear here.</p>
+          </div>
+        </div>
+      </OverviewSection>
     </div>
   );
 }

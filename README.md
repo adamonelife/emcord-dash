@@ -1,4 +1,4 @@
-# Twin Ops Dashboard
+# EMCORD Dashboard
 
 Early-stage ops dashboard for the new digital twin / AR / MR / VR company.
 Pipeline and Finance are both functional now on manual entry, with the data
@@ -34,7 +34,7 @@ needed.
 ## What's in here
 
 - **Overview** — top-line KPIs and pipeline-by-stage breakdown.
-- **Pipeline** — add/edit/delete deals, filter by service type (Digital
+- **Sales** — add/edit/delete deals, filter by service type (Digital
   Twin / AR / MR / VR / Immersive Experience), inline stage changes.
 - **Finance** — invoice entry (contact, amount, currency, status, dates)
   and a separate expenses ledger, with outstanding/paid/expenses totals

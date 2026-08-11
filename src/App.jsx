@@ -1,8 +1,11 @@
 import { HashRouter, Routes, Route } from 'react-router-dom';
 import Nav from './components/Nav';
 import OverviewPage from './pages/OverviewPage';
-import PipelinePage from './pages/PipelinePage';
+import SalesPage from './pages/SalesPage';
+import ProjectsPage from './pages/ProjectsPage';
 import FinancePage from './pages/FinancePage';
+import OperationsPage from './pages/OperationsPage';
+import CompanyPage from './pages/CompanyPage';
 import { ServiceTypeProvider } from './context/ServiceTypeContext';
 import { isSupabaseConfigured, missingSupabaseVariables } from './lib/supabaseClient';
 
@@ -24,8 +27,11 @@ export default function App() {
             )}
             <Routes>
               <Route path="/" element={<OverviewPage />} />
-              <Route path="/pipeline" element={<PipelinePage />} />
+              <Route path="/sales" element={<SalesPage />} />
+              <Route path="/projects" element={<ProjectsPage />} />
               <Route path="/finance" element={<FinancePage />} />
+              <Route path="/operations" element={<OperationsPage />} />
+              <Route path="/company" element={<CompanyPage />} />
             </Routes>
           </main>
         </div>

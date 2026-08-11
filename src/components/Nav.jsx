@@ -2,8 +2,11 @@ import { NavLink } from 'react-router-dom';
 
 const links = [
   { to: '/', label: 'Overview', end: true },
-  { to: '/pipeline', label: 'Pipeline' },
-  { to: '/finance', label: 'Finance' }
+  { to: '/sales', label: 'Sales' },
+  { to: '/projects', label: 'Projects' },
+  { to: '/finance', label: 'Finance' },
+  { to: '/operations', label: 'Operations' },
+  { to: '/company', label: 'Company' }
 ];
 
 export default function Nav() {
@@ -28,7 +31,7 @@ export default function Nav() {
             flexShrink: 0
           }}
         />
-        <h1 style={{ fontSize: 15, letterSpacing: '0.02em' }}>TWIN OPS</h1>
+        <h1 style={{ fontSize: 15, letterSpacing: '0.08em' }}>EMCORD</h1>
       </div>
       <nav style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
         {links.map((l) => (
