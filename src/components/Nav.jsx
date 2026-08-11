@@ -12,7 +12,7 @@ const links = [
 
 export default function Nav() {
   const [logoFailed, setLogoFailed] = useState(false);
-  const logoUrl = `${import.meta.env.BASE_URL}brand/emcord-logo.png`;
+  const logoUrl = `${import.meta.env.BASE_URL}brand/emcord-logo.png?v=transparent`;
 
   return (
     <aside className="sidebar">

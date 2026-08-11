@@ -93,12 +93,11 @@ body {
 }
 
 .brand-logo {
-  position: absolute;
-  top: -46px;
-  left: 2px;
   display: block;
-  width: 180px;
-  height: auto;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
 }
 
 .brand-wordmark-fallback {
@@ -830,9 +829,7 @@ input[type='range'] {
   }
 
   .brand-logo {
-    top: -37px;
-    left: 0;
-    width: 136px;
+    width: 100%;
   }
 
   .nav-label { display: none; }
