@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
 const links = [
@@ -10,10 +11,21 @@ const links = [
 ];
 
 export default function Nav() {
+  const [logoFailed, setLogoFailed] = useState(false);
+  const logoUrl = `${import.meta.env.BASE_URL}brand/emcord-logo.png`;
+
   return (
     <aside className="sidebar">
       <div className="brand-lockup">
-        <img src="/brand/emcord-logo.png" alt="EMCORD" className="brand-logo" />
+        {!logoFailed && (
+          <img
+            src={logoUrl}
+            alt="EMCORD"
+            className="brand-logo"
+            onError={() => setLogoFailed(true)}
+          />
+        )}
+        {logoFailed && <span className="brand-wordmark-fallback">EMCORD</span>}
       </div>
       <div className="nav-label">Operating platform</div>
       <nav className="primary-nav" aria-label="Primary navigation">

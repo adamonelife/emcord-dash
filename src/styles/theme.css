@@ -101,6 +101,17 @@ body {
   height: auto;
 }
 
+.brand-wordmark-fallback {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding-left: 9px;
+  color: var(--text-primary);
+  font-size: 21px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
 .nav-label {
   margin: 0 10px 9px;
   color: var(--text-muted);
