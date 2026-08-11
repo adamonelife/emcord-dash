@@ -1,19 +1,26 @@
 import MetricCard from '../components/MetricCard';
 import OverviewSection from '../components/OverviewSection';
 import { useOverviewData } from '../hooks/useOverviewData';
-import { formatCurrencyTotals } from '../lib/overviewMetrics';
+import { formatCurrencyTotals } from '../lib/currency';
 
 export default function OverviewPage() {
-  const { loading, commercial, unavailableSources } = useOverviewData();
+  const { loading, commercial, delivery, unavailableSources } = useOverviewData();
   const unavailable = unavailableSources.length > 0;
   const salesUnavailable = unavailableSources.includes('sales');
   const financeUnavailable = unavailableSources.includes('finance');
+  const projectsUnavailable = unavailableSources.includes('projects');
 
   function metricDetail(totals, sourceUnavailable, emptyMessage) {
     if (loading) return 'Loading current dashboard data';
     if (sourceUnavailable) return 'Data source unavailable';
     if (Object.keys(totals).length === 0) return emptyMessage;
     return 'Live from the current dashboard data source';
+  }
+
+  function projectMetricDetail(emptyMessage) {
+    if (loading) return 'Loading current project data';
+    if (projectsUnavailable) return 'Projects data source unavailable';
+    return emptyMessage;
   }
 
   return (
@@ -63,10 +70,28 @@ export default function OverviewPage() {
 
       <OverviewSection title="Delivery" description="Project progress, risk and upcoming commitments.">
         <div className="metric-grid metric-grid-four">
-          <MetricCard label="Active projects" value="0" detail="Projects data not configured" />
-          <MetricCard label="Projects at risk" value="0" detail="Project health not configured" tone="warning" />
-          <MetricCard label="Upcoming deadlines" value="0" detail="Milestones not configured" />
-          <MetricCard label="Completed projects" value="0" detail="Projects data not configured" tone="brand-green" />
+          <MetricCard
+            label="Active projects"
+            value={loading ? '—' : delivery.activeCount}
+            detail={projectMetricDetail(delivery.activeCount ? 'Live from EMCORD project records' : 'No active projects')}
+          />
+          <MetricCard
+            label="Projects at risk"
+            value={loading ? '—' : delivery.atRiskCount}
+            detail={projectMetricDetail(delivery.atRiskCount ? 'Requires delivery attention' : 'No projects currently at risk')}
+            tone="warning"
+          />
+          <MetricCard
+            label="Upcoming deadlines"
+            value={loading ? '—' : delivery.upcomingDeadlineCount}
+            detail={projectMetricDetail(delivery.upcomingDeadlineCount ? 'Target dates in the next 30 days' : 'No deadlines in the next 30 days')}
+          />
+          <MetricCard
+            label="Completed projects"
+            value={loading ? '—' : delivery.completedCount}
+            detail={projectMetricDetail(delivery.completedCount ? 'Live from EMCORD project records' : 'No completed projects')}
+            tone="brand-green"
+          />
         </div>
       </OverviewSection>
 

@@ -10,11 +10,15 @@ be swapped in later without changing any page.
 1. Go to supabase.com → New project.
 2. Once it's up, open **SQL Editor → New query**, paste the contents of
    `supabase/schema.sql`, and run it. This creates the `deals`, `invoices`,
-   and `expenses` tables with permissive RLS (fine for a single internal
+   `expenses`, and `projects` tables with permissive RLS (fine for a single internal
    user — tighten later once there's auth or multiple users).
 3. Go to **Project Settings → API** and copy:
    - `Project URL` → `VITE_SUPABASE_URL`
    - `anon public` key → `VITE_SUPABASE_ANON_KEY`
+
+For an existing dashboard database, run
+`supabase/migrations/20260811_create_projects.sql` in the SQL Editor instead
+of rerunning the full schema.
 
 ## 2. Push to GitHub
 
@@ -36,6 +40,8 @@ needed.
 - **Overview** — top-line KPIs and pipeline-by-stage breakdown.
 - **Sales** — add/edit/delete deals, filter by service type (Digital
   Twin / AR / MR / VR / Immersive Experience), inline stage changes.
+- **Projects** — create and edit delivery projects, filter the portfolio,
+  track progress, priorities, owners, risk and upcoming deadlines.
 - **Finance** — invoice entry (contact, amount, currency, status, dates)
   and a separate expenses ledger, with outstanding/paid/expenses totals
   grouped by currency.

@@ -3,6 +3,8 @@ import Nav from './components/Nav';
 import OverviewPage from './pages/OverviewPage';
 import SalesPage from './pages/SalesPage';
 import ProjectsPage from './pages/ProjectsPage';
+import ProjectCreatePage from './pages/ProjectCreatePage';
+import ProjectDetailPage from './pages/ProjectDetailPage';
 import FinancePage from './pages/FinancePage';
 import OperationsPage from './pages/OperationsPage';
 import CompanyPage from './pages/CompanyPage';
@@ -29,6 +31,8 @@ export default function App() {
               <Route path="/" element={<OverviewPage />} />
               <Route path="/sales" element={<SalesPage />} />
               <Route path="/projects" element={<ProjectsPage />} />
+              <Route path="/projects/new" element={<ProjectCreatePage />} />
+              <Route path="/projects/:projectId" element={<ProjectDetailPage />} />
               <Route path="/finance" element={<FinancePage />} />
               <Route path="/operations" element={<OperationsPage />} />
               <Route path="/company" element={<CompanyPage />} />
