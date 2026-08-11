@@ -19,11 +19,11 @@ const emptyDeal = {
 };
 
 const stageColor = {
-  'New Lead': 'var(--text-muted)',
-  'Qualified': 'var(--accent-2)',
-  'Proposal Sent': 'var(--warn)',
-  'Negotiation': 'var(--warn)',
-  'Won': 'var(--good)',
+  'New Lead': 'var(--text-secondary)',
+  'Qualified': 'var(--info)',
+  'Proposal Sent': 'var(--warning)',
+  'Negotiation': 'var(--warning)',
+  'Won': 'var(--brand-green)',
   'Lost': 'var(--danger)'
 };
 
@@ -110,7 +110,7 @@ export default function SalesPage() {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 20 }}>
         <div>
           <h2 style={{ fontSize: 20, marginBottom: 4 }}>Sales</h2>
-          <p style={{ color: 'var(--text-muted)', fontSize: 13, margin: 0 }}>
+          <p style={{ color: 'var(--text-secondary)', fontSize: 13, margin: 0 }}>
             Leads and deals — manual entry for now, shaped to map onto GoHighLevel later.
           </p>
         </div>
@@ -134,7 +134,7 @@ export default function SalesPage() {
         </div>
         <div className="card" style={{ padding: 16 }}>
           <div className="kpi-label">Won value</div>
-          <div className="kpi-value" style={{ color: 'var(--good)' }}>
+          <div className="kpi-value" style={{ color: 'var(--brand-green)' }}>
             {totals.wonValue.toLocaleString(undefined, { maximumFractionDigits: 0 })}
           </div>
         </div>
@@ -199,7 +199,7 @@ export default function SalesPage() {
         </form>
       )}
 
-      <div className="card" style={{ overflow: 'hidden' }}>
+      <div className="card table-card">
         <table>
           <thead>
             <tr>
@@ -215,17 +215,17 @@ export default function SalesPage() {
           </thead>
           <tbody>
             {loading && (
-              <tr><td colSpan={8} style={{ color: 'var(--text-muted)' }}>Loading…</td></tr>
+              <tr><td colSpan={8} style={{ color: 'var(--text-secondary)' }}>Loading…</td></tr>
             )}
             {!loading && filtered.length === 0 && (
-              <tr><td colSpan={8} style={{ color: 'var(--text-muted)' }}>No deals yet — add your first one above.</td></tr>
+              <tr><td colSpan={8} style={{ color: 'var(--text-secondary)' }}>No deals yet — add your first one above.</td></tr>
             )}
             {filtered.map((d) => (
               <tr key={d.id}>
                 <td>{d.company}</td>
-                <td style={{ color: 'var(--text-muted)' }}>{d.contact_name || '—'}</td>
+                <td style={{ color: 'var(--text-secondary)' }}>{d.contact_name || '—'}</td>
                 <td>
-                  <span className="badge" style={{ borderColor: 'var(--border-strong)', color: 'var(--text-muted)' }}>
+                  <span className="badge" style={{ color: 'var(--text-secondary)' }}>
                     {d.service_type}
                   </span>
                 </td>
@@ -238,14 +238,14 @@ export default function SalesPage() {
                       padding: '4px 8px',
                       fontSize: 12,
                       color: stageColor[d.stage],
-                      borderColor: 'var(--border-strong)'
+                      borderColor: 'var(--border-active)'
                     }}
                   >
                     {STAGES.map((s) => <option key={s}>{s}</option>)}
                   </select>
                 </td>
                 <td className="mono">{Number(d.amount || 0).toLocaleString()} {d.currency}</td>
-                <td className="mono" style={{ color: 'var(--text-muted)' }}>{d.expected_close || '—'}</td>
+                <td className="mono" style={{ color: 'var(--text-secondary)' }}>{d.expected_close || '—'}</td>
                 <td>{d.owner || '—'}</td>
                 <td>
                   <button className="btn btn-danger" style={{ padding: '4px 10px', fontSize: 12 }} onClick={() => handleDelete(d.id)}>

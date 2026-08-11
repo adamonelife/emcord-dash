@@ -15,7 +15,7 @@ export default function App() {
       <ServiceTypeProvider>
         <div className="app-shell">
           <Nav />
-          <main style={{ flex: 1, padding: '28px 32px', maxWidth: 1200 }}>
+          <main className="app-main">
             {!isSupabaseConfigured && (
               <div className="config-warning" role="alert">
                 <strong>Supabase is not configured.</strong>

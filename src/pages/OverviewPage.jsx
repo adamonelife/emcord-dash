@@ -38,23 +38,25 @@ export default function OverviewPage() {
             label="Open pipeline value"
             value={loading ? '—' : formatCurrencyTotals(commercial.openPipeline)}
             detail={metricDetail(commercial.openPipeline, salesUnavailable, 'No open deals')}
+            tone="brand-cyan"
           />
           <MetricCard
             label="Weighted pipeline value"
             value="—"
             detail="Stage probabilities not configured"
+            tone="brand-cyan"
           />
           <MetricCard
             label="Won revenue"
             value={loading ? '—' : formatCurrencyTotals(commercial.wonRevenue)}
             detail={metricDetail(commercial.wonRevenue, salesUnavailable, 'No won deals')}
-            tone="good"
+            tone="brand-green"
           />
           <MetricCard
             label="Outstanding invoices"
             value={loading ? '—' : formatCurrencyTotals(commercial.outstandingInvoices)}
             detail={metricDetail(commercial.outstandingInvoices, financeUnavailable, 'No outstanding invoices')}
-            tone="warn"
+            tone="warning"
           />
         </div>
       </OverviewSection>
@@ -62,16 +64,16 @@ export default function OverviewPage() {
       <OverviewSection title="Delivery" description="Project progress, risk and upcoming commitments.">
         <div className="metric-grid metric-grid-four">
           <MetricCard label="Active projects" value="0" detail="Projects data not configured" />
-          <MetricCard label="Projects at risk" value="0" detail="Project health not configured" />
+          <MetricCard label="Projects at risk" value="0" detail="Project health not configured" tone="warning" />
           <MetricCard label="Upcoming deadlines" value="0" detail="Milestones not configured" />
-          <MetricCard label="Completed projects" value="0" detail="Projects data not configured" />
+          <MetricCard label="Completed projects" value="0" detail="Projects data not configured" tone="brand-green" />
         </div>
       </OverviewSection>
 
       <OverviewSection title="Operations" description="Execution, blockers and resource visibility.">
         <div className="metric-grid metric-grid-three">
           <MetricCard label="Outstanding actions" value="0" detail="Actions data not configured" />
-          <MetricCard label="Blocked items" value="0" detail="Blockers data not configured" />
+          <MetricCard label="Blocked items" value="0" detail="Blockers data not configured" tone="danger" />
           <MetricCard label="Team / resource summary" value="—" detail="Resource planning not configured" />
         </div>
       </OverviewSection>

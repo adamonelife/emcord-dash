@@ -14,11 +14,11 @@ const emptyExpense = {
 };
 
 const statusColor = {
-  Draft: 'var(--text-muted)',
-  Sent: 'var(--accent-2)',
-  Paid: 'var(--good)',
+  Draft: 'var(--text-secondary)',
+  Sent: 'var(--info)',
+  Paid: 'var(--brand-green)',
   Overdue: 'var(--danger)',
-  Void: 'var(--text-faint)'
+  Void: 'var(--text-muted)'
 };
 
 export default function FinancePage() {
@@ -130,7 +130,7 @@ export default function FinancePage() {
     <div>
       <div style={{ marginBottom: 20 }}>
         <h2 style={{ fontSize: 20, marginBottom: 4 }}>Finance</h2>
-        <p style={{ color: 'var(--text-muted)', fontSize: 13, margin: 0 }}>
+        <p style={{ color: 'var(--text-secondary)', fontSize: 13, margin: 0 }}>
           Manual invoice and expense entry — shaped to map onto Xero later.
         </p>
       </div>
@@ -139,15 +139,15 @@ export default function FinancePage() {
         {Object.keys(summary).length === 0 && (
           <div className="card" style={{ padding: 16 }}>
             <div className="kpi-label">No data yet</div>
-            <div className="kpi-value" style={{ fontSize: 15, color: 'var(--text-muted)' }}>Add an invoice or expense to see totals</div>
+            <div className="kpi-value" style={{ fontSize: 15, color: 'var(--text-secondary)' }}>Add an invoice or expense to see totals</div>
           </div>
         )}
         {Object.entries(summary).map(([currency, s]) => (
           <div key={currency} className="card" style={{ padding: 16 }}>
             <div className="kpi-label">{currency}</div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 4, marginTop: 6 }}>
-              <Row label="Outstanding" value={s.outstanding} color="var(--warn)" />
-              <Row label="Paid" value={s.paid} color="var(--good)" />
+              <Row label="Outstanding" value={s.outstanding} color="var(--warning)" />
+              <Row label="Paid" value={s.paid} color="var(--brand-green)" />
               <Row label="Expenses" value={s.expenses} color="var(--danger)" />
             </div>
           </div>
@@ -216,7 +216,7 @@ export default function FinancePage() {
             </form>
           )}
 
-          <div className="card" style={{ overflow: 'hidden' }}>
+          <div className="card table-card">
             <table>
               <thead>
                 <tr>
@@ -224,24 +224,24 @@ export default function FinancePage() {
                 </tr>
               </thead>
               <tbody>
-                {loading && <tr><td colSpan={7} style={{ color: 'var(--text-muted)' }}>Loading…</td></tr>}
-                {!loading && invoices.length === 0 && <tr><td colSpan={7} style={{ color: 'var(--text-muted)' }}>No invoices yet.</td></tr>}
+                {loading && <tr><td colSpan={7} style={{ color: 'var(--text-secondary)' }}>Loading…</td></tr>}
+                {!loading && invoices.length === 0 && <tr><td colSpan={7} style={{ color: 'var(--text-secondary)' }}>No invoices yet.</td></tr>}
                 {invoices.map((inv) => (
                   <tr key={inv.id}>
                     <td>{inv.contact}</td>
-                    <td className="mono" style={{ color: 'var(--text-muted)' }}>{inv.invoice_number || '—'}</td>
+                    <td className="mono" style={{ color: 'var(--text-secondary)' }}>{inv.invoice_number || '—'}</td>
                     <td>
                       <select
                         value={inv.status}
                         onChange={(e) => handleStatusChange(inv, e.target.value)}
-                        style={{ width: 'auto', padding: '4px 8px', fontSize: 12, color: statusColor[inv.status], borderColor: 'var(--border-strong)' }}
+                        style={{ width: 'auto', padding: '4px 8px', fontSize: 12, color: statusColor[inv.status], borderColor: 'var(--border-active)' }}
                       >
                         {INVOICE_STATUSES.map((s) => <option key={s}>{s}</option>)}
                       </select>
                     </td>
                     <td className="mono">{Number(inv.amount || 0).toLocaleString()} {inv.currency}</td>
-                    <td className="mono" style={{ color: 'var(--text-muted)' }}>{inv.issue_date || '—'}</td>
-                    <td className="mono" style={{ color: 'var(--text-muted)' }}>{inv.due_date || '—'}</td>
+                    <td className="mono" style={{ color: 'var(--text-secondary)' }}>{inv.issue_date || '—'}</td>
+                    <td className="mono" style={{ color: 'var(--text-secondary)' }}>{inv.due_date || '—'}</td>
                     <td><button className="btn btn-danger" style={{ padding: '4px 10px', fontSize: 12 }} onClick={() => handleDeleteInvoice(inv.id)}>Delete</button></td>
                   </tr>
                 ))}
@@ -293,20 +293,20 @@ export default function FinancePage() {
             </form>
           )}
 
-          <div className="card" style={{ overflow: 'hidden' }}>
+          <div className="card table-card">
             <table>
               <thead>
                 <tr><th>Description</th><th>Category</th><th>Amount</th><th>Date</th><th></th></tr>
               </thead>
               <tbody>
-                {loading && <tr><td colSpan={5} style={{ color: 'var(--text-muted)' }}>Loading…</td></tr>}
-                {!loading && expenses.length === 0 && <tr><td colSpan={5} style={{ color: 'var(--text-muted)' }}>No expenses yet.</td></tr>}
+                {loading && <tr><td colSpan={5} style={{ color: 'var(--text-secondary)' }}>Loading…</td></tr>}
+                {!loading && expenses.length === 0 && <tr><td colSpan={5} style={{ color: 'var(--text-secondary)' }}>No expenses yet.</td></tr>}
                 {expenses.map((exp) => (
                   <tr key={exp.id}>
                     <td>{exp.description}</td>
-                    <td style={{ color: 'var(--text-muted)' }}>{exp.category}</td>
+                    <td style={{ color: 'var(--text-secondary)' }}>{exp.category}</td>
                     <td className="mono">{Number(exp.amount || 0).toLocaleString()} {exp.currency}</td>
-                    <td className="mono" style={{ color: 'var(--text-muted)' }}>{exp.date || '—'}</td>
+                    <td className="mono" style={{ color: 'var(--text-secondary)' }}>{exp.date || '—'}</td>
                     <td><button className="btn btn-danger" style={{ padding: '4px 10px', fontSize: 12 }} onClick={() => handleDeleteExpense(exp.id)}>Delete</button></td>
                   </tr>
                 ))}
@@ -322,7 +322,7 @@ export default function FinancePage() {
 function Row({ label, value, color }) {
   return (
     <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12 }}>
-      <span style={{ color: 'var(--text-muted)' }}>{label}</span>
+      <span style={{ color: 'var(--text-secondary)' }}>{label}</span>
       <span className="mono" style={{ color }}>{Number(value).toLocaleString()}</span>
     </div>
   );
@@ -334,9 +334,9 @@ function TabBtn({ active, onClick, children }) {
       onClick={onClick}
       className="btn"
       style={{
-        background: active ? 'var(--surface-raised)' : 'transparent',
-        color: active ? 'var(--text)' : 'var(--text-muted)',
-        borderColor: active ? 'var(--border-strong)' : 'transparent'
+        background: active ? 'var(--surface-elevated)' : 'transparent',
+        color: active ? 'var(--text-primary)' : 'var(--text-secondary)',
+        borderColor: active ? 'var(--border-active)' : 'transparent'
       }}
     >
       {children}
