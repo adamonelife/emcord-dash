@@ -1,4 +1,4 @@
-import { supabase } from './supabaseClient';
+import { getSupabaseClient } from './supabaseClient';
 
 // Invoice fields mirror Xero's invoice shape (Contact, Total, CurrencyCode,
 // Status, Date, DueDate, InvoiceNumber) so swapping to the Xero API later
@@ -18,6 +18,7 @@ export const EXPENSE_CATEGORIES = [
 ];
 
 export async function getInvoices() {
+  const supabase = getSupabaseClient();
   const { data, error } = await supabase
     .from('invoices')
     .select('*')
@@ -27,6 +28,7 @@ export async function getInvoices() {
 }
 
 export async function createInvoice(invoice) {
+  const supabase = getSupabaseClient();
   const { data, error } = await supabase
     .from('invoices')
     .insert([invoice])
@@ -37,6 +39,7 @@ export async function createInvoice(invoice) {
 }
 
 export async function updateInvoice(id, patch) {
+  const supabase = getSupabaseClient();
   const { data, error } = await supabase
     .from('invoices')
     .update({ ...patch, updated_at: new Date().toISOString() })
@@ -48,11 +51,13 @@ export async function updateInvoice(id, patch) {
 }
 
 export async function deleteInvoice(id) {
+  const supabase = getSupabaseClient();
   const { error } = await supabase.from('invoices').delete().eq('id', id);
   if (error) throw error;
 }
 
 export async function getExpenses() {
+  const supabase = getSupabaseClient();
   const { data, error } = await supabase
     .from('expenses')
     .select('*')
@@ -62,6 +67,7 @@ export async function getExpenses() {
 }
 
 export async function createExpense(expense) {
+  const supabase = getSupabaseClient();
   const { data, error } = await supabase
     .from('expenses')
     .insert([expense])
@@ -72,6 +78,7 @@ export async function createExpense(expense) {
 }
 
 export async function deleteExpense(id) {
+  const supabase = getSupabaseClient();
   const { error } = await supabase.from('expenses').delete().eq('id', id);
   if (error) throw error;
 }

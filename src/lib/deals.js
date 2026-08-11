@@ -1,4 +1,4 @@
-import { supabase } from './supabaseClient';
+import { getSupabaseClient } from './supabaseClient';
 
 // Mirrors the eventual GoHighLevel (GHL) opportunity shape — name, pipelineId,
 // pipelineStageId, contactId, monetaryValue, assignedTo, source — so that
@@ -35,6 +35,7 @@ export const SERVICE_TYPES = [
 ];
 
 export async function getDeals() {
+  const supabase = getSupabaseClient();
   const { data, error } = await supabase
     .from('deals')
     .select('*')
@@ -44,6 +45,7 @@ export async function getDeals() {
 }
 
 export async function createDeal(deal) {
+  const supabase = getSupabaseClient();
   const { data, error } = await supabase
     .from('deals')
     .insert([deal])
@@ -54,6 +56,7 @@ export async function createDeal(deal) {
 }
 
 export async function updateDeal(id, patch) {
+  const supabase = getSupabaseClient();
   const { data, error } = await supabase
     .from('deals')
     .update({ ...patch, updated_at: new Date().toISOString() })
@@ -65,6 +68,7 @@ export async function updateDeal(id, patch) {
 }
 
 export async function deleteDeal(id) {
+  const supabase = getSupabaseClient();
   const { error } = await supabase.from('deals').delete().eq('id', id);
   if (error) throw error;
 }

@@ -7,12 +7,18 @@ export default function OverviewPage() {
   const [invoices, setInvoices] = useState([]);
   const [expenses, setExpenses] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     (async () => {
-      const [d, i, e] = await Promise.all([getDeals(), getInvoices(), getExpenses()]);
-      setDeals(d); setInvoices(i); setExpenses(e);
-      setLoading(false);
+      try {
+        const [d, i, e] = await Promise.all([getDeals(), getInvoices(), getExpenses()]);
+        setDeals(d); setInvoices(i); setExpenses(e);
+      } catch (e) {
+        setError(e.message);
+      } finally {
+        setLoading(false);
+      }
     })();
   }, []);
 
@@ -28,6 +34,12 @@ export default function OverviewPage() {
           Digital twin / AR / MR / VR studio — early build, manual data entry.
         </p>
       </div>
+
+      {error && (
+        <div className="card" style={{ padding: 12, marginBottom: 16, borderColor: 'var(--warn)', color: 'var(--warn)', fontSize: 13 }}>
+          {error}
+        </div>
+      )}
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12, marginBottom: 28 }}>
         <Kpi label="Open deals" value={loading ? '—' : openDeals.length} />

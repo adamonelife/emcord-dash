@@ -74,6 +74,24 @@ a { color: var(--accent); text-decoration: none; }
   position: relative;
 }
 
+.config-warning {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 20px;
+  padding: 12px 14px;
+  border: 1px solid var(--warn);
+  border-radius: var(--radius);
+  background: rgba(224, 179, 85, 0.1);
+  color: var(--warn);
+  font-size: 13px;
+}
+
+.config-warning code {
+  font-family: var(--font-mono);
+  color: var(--text);
+}
+
 /* corner-bracket motif on cards, evokes a scan/viewport target */
 .card::before, .card::after {
   content: '';
